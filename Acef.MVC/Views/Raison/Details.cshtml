@@ -1,0 +1,25 @@
+﻿@model Acef.MVC.Models.DTO.RaisonDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Raison</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NomRaison)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NomRaison)
+        </dd>
+    </dl>
+</div>
+<br />
+<div>
+    @Html.ActionLink("Modifier", "Edit", new { id = Model.ID }) |
+    <a asp-action="Index">Retour à la liste</a>
+</div>
