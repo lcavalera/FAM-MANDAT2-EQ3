@@ -88,7 +88,7 @@ namespace Acef.MVC.Controllers
             if (ModelState.IsValid)
             {
                 await _raisonService.Modifier(raison);
-                _logger.LogInformation(RaisonLog.Modication, $"Modification d'une offre. ID = {raison.ID}");
+                _logger.LogInformation(RaisonLog.Modification, $"Modification d'une offre. ID = {raison.ID}");
 
                 _logger.LogCritical($"L'application a rencontré un problème critique lors de la modification d'une raison de consultation. ID = {raison.ID}");
 
