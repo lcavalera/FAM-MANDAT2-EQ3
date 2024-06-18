@@ -9,6 +9,7 @@ namespace Acef.MVC.Models.DTO
         public int ID { get; set; }
 
         [Required(ErrorMessage = "Veuillez renseigner le nom de la raison de la consultation")]
-        public string NomRaison { get; set; }
+        public string Name { get; set; }
+        public string? Description { get; set; }
     }
 }

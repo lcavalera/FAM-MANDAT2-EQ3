@@ -18,9 +18,32 @@ namespace Acef.MVC.Controllers
         }
 
         // GET: RaisonController
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? filter, string sortOrder)
         {
-            return View(await _raisonService.ObtenirTout());
+
+            var consultationReasons = await _raisonService.ObtenirTout();
+
+            // Filtering by name or description
+            if (!string.IsNullOrEmpty(filter))
+            {
+                consultationReasons = consultationReasons.Where(
+                    cr => cr.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase) ||
+                    (cr.Description != null && cr.Description.Contains(filter, StringComparison.InvariantCultureIgnoreCase))
+                );
+            }
+
+            // Sort by name
+            ViewData["SortByName"] = "";
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                ViewData["SortByName"] = "name_desc";
+            }
+
+            consultationReasons = sortOrder == "name_desc" ?
+                consultationReasons.OrderByDescending(cr => cr.Name) :
+                consultationReasons.OrderBy(cr => cr.Name);
+
+            return View(consultationReasons);
         }
 
         // GET: RaisonController/Details/5
@@ -30,7 +53,7 @@ namespace Acef.MVC.Controllers
 
             if (raison == null)
             {
-                _logger.LogError($"Une erreur c'est produite lors de la récupération d'une raison de consultation. ID = {raison.ID}");
+                _logger.LogError($"An error occurred when retrieving a consultation reason. ID = {raison.ID}");
                 return NotFound();
 
             }
@@ -46,18 +69,18 @@ namespace Acef.MVC.Controllers
         // POST: RaisonController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,NomRaison")] RaisonDTO raison)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description")] RaisonDTO raison)
         {
             if (ModelState.IsValid)
             {
                 await _raisonService.Ajouter(raison);
-                _logger.LogInformation(RaisonLog.Creation, $"Creation d'une raison de consultation. Nom = {raison.NomRaison}");
+                _logger.LogInformation(RaisonLog.Creation, $"Creating a consultation reason. Nom = {raison.Name}");
 
-                _logger.LogCritical($"L'application a rencontré un problème critique lors de la création d'une raison de consultation. Nom = {raison.NomRaison}");
+                _logger.LogCritical($"The application encountered a critical problem when creating a consultation reason. Nom = {raison.Name}");
 
                 return RedirectToAction(nameof(Index));
             }
-            _logger.LogError($"Une erreur c'est produite lors de la création d'une raison de consultation. Nom = {raison.NomRaison}");
+            _logger.LogError($"An error occurred when creating a reason for consultation. Nom = {raison.Name}");
             return View(raison);
         }
 
@@ -68,7 +91,7 @@ namespace Acef.MVC.Controllers
 
             if (raison == null)
             {
-                _logger.LogError($"Une erreur c'est produite lors de la récupération d'une raison de consultation. ID = {raison.ID}");
+                _logger.LogError($"An error occurred when retrieving a consultation reason. ID = {raison.ID}");
                 return NotFound();
             }
             return View(raison);
@@ -77,20 +100,20 @@ namespace Acef.MVC.Controllers
         // POST: RaisonController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,NomRaison")] RaisonDTO raison)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description")] RaisonDTO raison)
         {
             if (raison == null)
             {
-                _logger.LogError($"Une erreur c'est produite lors de la modification d'une raison de consultation. ID = {raison.ID}");
+                _logger.LogError($"An error occurred when modifying a consultation reason. ID = {raison.ID}");
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
                 await _raisonService.Modifier(raison);
-                _logger.LogInformation(RaisonLog.Modification, $"Modification d'une offre. ID = {raison.ID}");
+                _logger.LogInformation(RaisonLog.Modification, $"Editing an offer. ID = {raison.ID}");
 
-                _logger.LogCritical($"L'application a rencontré un problème critique lors de la modification d'une raison de consultation. ID = {raison.ID}");
+                _logger.LogCritical($"The application encountered a critical problem when modifying a consultation reason. ID = {raison.ID}");
 
                 return RedirectToAction(nameof(Index));
             }
@@ -105,7 +128,7 @@ namespace Acef.MVC.Controllers
 
             if (raison == null)
             {
-                _logger.LogError($"Une erreur c'est produite lors de la récupération d'une raison de consultation. ID = {raison.ID}");
+                _logger.LogError($"An error occurred when retrieving a consultation reason. ID = {raison.ID}");
                 return NotFound();
             }
             return View(raison);
@@ -119,12 +142,12 @@ namespace Acef.MVC.Controllers
             raison = await _raisonService.ObtenirSelonId(id);
             if (raison == null)
             {
-                _logger.LogError($"Une erreur c'est produite lors de la récupération d'une raison de consultation. ID = {raison.ID}");
+                _logger.LogError($"An error occurred when retrieving a consultation reason. ID = {raison.ID}");
                 return NotFound();
             }
             await _raisonService.Supprimer(raison);
-            _logger.LogInformation(RaisonLog.Suppression, $"Suppression d'une raison de consultation. ID = {raison.ID}");
-            _logger.LogCritical($"L'application a rencontré un problème critique lors de la suppression d'une raison de consultation. ID = {raison.ID}");
+            _logger.LogInformation(RaisonLog.Suppression, $"Deleting a consultation reason. ID = {raison.ID}");
+            _logger.LogCritical($"The application encountered a critical problem when deleting a consultation reason. ID = {raison.ID}");
 
             return RedirectToAction(nameof(Index));
         }

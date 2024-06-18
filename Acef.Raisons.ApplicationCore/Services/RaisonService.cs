@@ -25,7 +25,7 @@ namespace Acef.Raisons.ApplicationCore.Services
         {
             await _raisonRepository.AddAsync(new Raison
             {
-                NomRaison = raison.NomRaison,
+                Name = raison.Name,
             });
         }
 
@@ -33,7 +33,7 @@ namespace Acef.Raisons.ApplicationCore.Services
         {
             Raison raisonAModifier = await _raisonRepository.GetByIdAsync(raison.ID);
 
-            raisonAModifier.NomRaison = raison.NomRaison;
+            raisonAModifier.Name = raison.Name;
 
             await _raisonRepository.EditAsync(raisonAModifier);
         }
@@ -46,7 +46,7 @@ namespace Acef.Raisons.ApplicationCore.Services
         public async Task<IEnumerable<RaisonDTO>> ObtenirTout()
         {
             /// modification of the method to return elements to which soft delete has not been applied
-            return _mapper.Map<List<RaisonDTO>>(await _raisonRepository.ListAsync(r => r.IsActive == true));
+            return _mapper.Map<List<RaisonDTO>>(await _raisonRepository.ListAsync(r => r.IsDeleted == false));
         }
 
         public async Task Supprimer(RaisonDTO raison)
@@ -54,7 +54,7 @@ namespace Acef.Raisons.ApplicationCore.Services
             Raison raisonASupprimer = await _raisonRepository.GetByIdAsync(raison.ID);
 
             /// modification of the method to apply soft delete
-            raisonASupprimer.IsActive = false;
+            raisonASupprimer.IsDeleted = true;
             await _raisonRepository.EditAsync(raisonASupprimer);
         }
     }

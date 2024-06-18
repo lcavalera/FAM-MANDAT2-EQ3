@@ -9,8 +9,10 @@ namespace Acef.Raisons.ApplicationCore.Entites
 {
     public class Raison: BaseEntity
     {
-        [Required(ErrorMessage = "Veuillez renseigner le nom de la raison de la consultation")]
-        public string NomRaison { get; set; }
-        public bool IsActive { get; set; } = true;
+        [Required(ErrorMessage = "The Name field is required")]
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? DeletedAt { get; set; }
     }
 }

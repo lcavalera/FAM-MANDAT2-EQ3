@@ -4,6 +4,7 @@ using Acef.Raisons.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Acef.Raisons.Infrastructure.Migrations
 {
     [DbContext(typeof(RaisonContext))]
-    partial class RaisonContextModelSnapshot : ModelSnapshot
+    [Migration("20240618155409_corrNullablesProprietiesModelRaison")]
+    partial class corrNullablesProprietiesModelRaison
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

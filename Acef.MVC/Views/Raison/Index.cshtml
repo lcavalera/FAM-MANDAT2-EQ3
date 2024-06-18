@@ -9,11 +9,31 @@
 <p>
     <a asp-action="Create">Ajouter nouveau</a>
 </p>
+
+@*Bloc du filtrage*@
+<div class="d-flex justify-content-left my-2">
+    <form asp-action="Index" asp-controller="RaisonController" method="get">
+        <div class="row g-3 align-items-center">
+            <div class="col-auto">
+                <input class="form-control" type="text" id="filter" name="filter" placeholder="Search for a consultation reason" />
+            </div>
+            <div class="col-auto">
+                <input class="btn btn-primary" type="submit" value="Search" />
+            </div>
+        </div>
+    </form>
+</div>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NomRaison)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByName"]">
+                    @Html.DisplayNameFor(model => model.Name)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th></th>
         </tr>
@@ -22,8 +42,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.NomRaison)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
+            @if (item.Description == null)
+            {
+                <td>N/A</td>
+            }
+            else
+            {
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+            }
             <td>
                 @Html.ActionLink("Modifier", "Edit", new { id = item.ID }) |
                 @Html.ActionLink("Détails", "Details", new { id = item.ID }) |
