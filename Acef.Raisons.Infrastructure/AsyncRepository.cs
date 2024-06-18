@@ -2,12 +2,7 @@
 using Acef.Raisons.ApplicationCore.Interfaces;
 using Acef.Raisons.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Acef.Raisons.Infrastructure
 {

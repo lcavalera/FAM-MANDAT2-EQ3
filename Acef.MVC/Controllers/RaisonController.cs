@@ -1,7 +1,6 @@
 ﻿using Acef.MVC.Interfaces;
 using Acef.MVC.Models.DTO;
 using Acef.MVC.Models.Log;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Acef.MVC.Controllers

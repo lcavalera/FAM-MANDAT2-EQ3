@@ -3,14 +3,8 @@ using Acef.Raisons.ApplicationCore.Entites;
 using Acef.Raisons.ApplicationCore.Interfaces;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ACEF.API.Exceptions;
 using Microsoft.AspNetCore.Http;
-using System.Security.Cryptography;
 
 namespace Acef.Raisons.ApplicationCore.Services
 {
