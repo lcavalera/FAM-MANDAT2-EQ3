@@ -25,6 +25,9 @@ namespace Acef.Raisons.API.Controllers
         /// <response code="500">service currently unavailable</response>
         // GET: api/<RaisonController>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<RaisonDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IEnumerable<RaisonDTO>> Get()
         {
             return await _raisonService.ObtenirTout();
@@ -35,20 +38,21 @@ namespace Acef.Raisons.API.Controllers
         /// </summary>
         /// <param name="id">id of the consultation reason to return</param>
         /// <response code="200">consultation reason found and returned</response>
+        /// <response code="400">Bad Request : Element has been soft deleted</response>
         /// <response code="404">consultation reason not found for specified id</response>
         /// <response code="500">service currently unavailable</response>
         // GET api/<RaisonController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult> Get(int id)
+        [ProducesResponseType(typeof(RaisonDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<RaisonDTO>> Get(int id)
         {
             RaisonDTO raison = await _raisonService.ObtenirSelonId(id);
 
-            if (raison == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(raison);
+            return raison == null ?
+                NotFound(new { Erreur = $"Consultation reason not found (id = {id})" }) : Ok(raison);
         }
 
         /// <summary>
@@ -60,6 +64,10 @@ namespace Acef.Raisons.API.Controllers
         /// <response code="500">service currently unavailable</response>
         // POST api/<RaisonController>
         [HttpPost]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(RaisonDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(RaisonDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Post([FromBody] RaisonDTO raison)
         {
             if (ModelState.IsValid)
@@ -69,7 +77,7 @@ namespace Acef.Raisons.API.Controllers
                 return CreatedAtAction("Get", new { id = raison.ID }, raison);
             }
 
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         /// <summary>
@@ -84,6 +92,11 @@ namespace Acef.Raisons.API.Controllers
         /// <response code="500">service currently unavailable</response>
         // PUT api/<RaisonController>/5
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(RaisonDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RaisonDTO), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Put(int id, [FromBody] RaisonDTO raison)
         {
             if (id != raison.ID)
@@ -105,10 +118,16 @@ namespace Acef.Raisons.API.Controllers
         /// <param name="id">id of the consultation reason to delete</param>
         /// <response code="200">consultation reason successfully deleted</response>
         /// <response code="204">consultation reason successfully deleted (no response body data)</response>
+        /// <response code="400">Bad Request (client side): consultation reason has been already deleted</response>
         /// <response code="404">consultation reason not found for specified id</response>
         /// <response code="500">service currently unavailable</response>
         // DELETE api/<RaisonController>/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(RaisonDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RaisonDTO), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Delete(int id)
         {
             RaisonDTO raison = await _raisonService.ObtenirSelonId(id);

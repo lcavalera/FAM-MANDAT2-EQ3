@@ -4,15 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Liste de les raisons de consultation</h1>
+<h1>Consultation Reasons List</h1>
 
 <p>
-    <a asp-action="Create">Ajouter nouveau</a>
+    <a asp-action="Create">Add a consultation reason</a>
 </p>
 
 @*Bloc du filtrage*@
 <div class="d-flex justify-content-left my-2">
-    <form asp-action="Index" asp-controller="RaisonController" method="get">
+    <form asp-action="Index" asp-controller="Raison" method="get">
         <div class="row g-3 align-items-center">
             <div class="col-auto">
                 <input class="form-control" type="text" id="filter" name="filter" placeholder="Search for a consultation reason" />
@@ -53,9 +53,9 @@
                 <td>@Html.DisplayFor(modelItem => item.Description)</td>
             }
             <td>
-                @Html.ActionLink("Modifier", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Détails", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Supprimer", "Delete", new { id = item.ID })
+                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                 @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                 @Html.ActionLink("Delete", "Delete", new { id = item.ID })
             </td>
         </tr>
 }
