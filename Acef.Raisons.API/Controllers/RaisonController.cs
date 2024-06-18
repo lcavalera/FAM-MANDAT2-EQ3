@@ -30,7 +30,7 @@ namespace Acef.Raisons.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IEnumerable<RaisonDTO>> Get()
         {
-            return await _raisonService.ObtenirTout();
+            return await _raisonService.Get();
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Acef.Raisons.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<RaisonDTO>> Get(int id)
         {
-            RaisonDTO raison = await _raisonService.ObtenirSelonId(id);
+            RaisonDTO raison = await _raisonService.GetById(id);
 
             return raison == null ?
                 NotFound(new { Erreur = $"Consultation reason not found (id = {id})" }) : Ok(raison);
@@ -72,7 +72,7 @@ namespace Acef.Raisons.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _raisonService.Ajouter(raison);
+                await _raisonService.Add(raison);
 
                 return CreatedAtAction("Get", new { id = raison.ID }, raison);
             }
@@ -105,7 +105,7 @@ namespace Acef.Raisons.API.Controllers
             }
             if (ModelState.IsValid)
             {
-                await _raisonService.Modifier(raison);
+                await _raisonService.Edit(raison);
 
                 return NoContent();
             }
@@ -130,14 +130,14 @@ namespace Acef.Raisons.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Delete(int id)
         {
-            RaisonDTO raison = await _raisonService.ObtenirSelonId(id);
+            RaisonDTO raison = await _raisonService.GetById(id);
 
             if (raison == null)
             {
                 return NotFound();
             }
 
-            await _raisonService.Supprimer(raison);
+            await _raisonService.Delete(raison);
 
             return NoContent();
         }

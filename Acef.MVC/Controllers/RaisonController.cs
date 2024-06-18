@@ -21,7 +21,7 @@ namespace Acef.MVC.Controllers
         public async Task<IActionResult> Index(string? filter, string sortOrder)
         {
 
-            var consultationReasons = await _raisonService.ObtenirTout();
+            var consultationReasons = await _raisonService.Get();
 
             // Filtering by name or description
             if (!string.IsNullOrEmpty(filter))
@@ -49,7 +49,7 @@ namespace Acef.MVC.Controllers
         // GET: RaisonController/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            RaisonDTO raison = await _raisonService.ObtenirSelonId(id);
+            RaisonDTO raison = await _raisonService.GetById(id);
 
             if (raison == null)
             {
@@ -73,7 +73,7 @@ namespace Acef.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _raisonService.Ajouter(raison);
+                await _raisonService.Add(raison);
                 _logger.LogInformation(RaisonLog.Creation, $"Creating a consultation reason. Nom = {raison.Name}");
 
                 _logger.LogCritical($"The application encountered a critical problem when creating a consultation reason. Nom = {raison.Name}");
@@ -87,7 +87,7 @@ namespace Acef.MVC.Controllers
         // GET: RaisonController/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            RaisonDTO raison = await _raisonService.ObtenirSelonId(id);
+            RaisonDTO raison = await _raisonService.GetById(id);
 
             if (raison == null)
             {
@@ -110,7 +110,7 @@ namespace Acef.MVC.Controllers
 
             if (ModelState.IsValid)
             {
-                await _raisonService.Modifier(raison);
+                await _raisonService.Edit(raison);
                 _logger.LogInformation(RaisonLog.Modification, $"Editing an offer. ID = {raison.ID}");
 
                 _logger.LogCritical($"The application encountered a critical problem when modifying a consultation reason. ID = {raison.ID}");
@@ -124,7 +124,7 @@ namespace Acef.MVC.Controllers
         // GET: RaisonController/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            RaisonDTO raison = await _raisonService.ObtenirSelonId(id);
+            RaisonDTO raison = await _raisonService.GetById(id);
 
             if (raison == null)
             {
@@ -139,13 +139,13 @@ namespace Acef.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id, RaisonDTO raison)
         {
-            raison = await _raisonService.ObtenirSelonId(id);
+            raison = await _raisonService.GetById(id);
             if (raison == null)
             {
                 _logger.LogError($"An error occurred when retrieving a consultation reason. ID = {raison.ID}");
                 return NotFound();
             }
-            await _raisonService.Supprimer(raison);
+            await _raisonService.Delete(raison);
             _logger.LogInformation(RaisonLog.Suppression, $"Deleting a consultation reason. ID = {raison.ID}");
             _logger.LogCritical($"The application encountered a critical problem when deleting a consultation reason. ID = {raison.ID}");
 

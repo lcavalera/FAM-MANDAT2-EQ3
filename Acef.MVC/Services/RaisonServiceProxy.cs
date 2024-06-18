@@ -13,7 +13,7 @@ namespace Acef.MVC.Services
             _httpClient = httpClient;
         }
 
-        public async Task Ajouter(RaisonDTO raison)
+        public async Task Add(RaisonDTO raison)
         {
             var response = await _httpClient.PostAsJsonAsync(_raisonApiUrl, raison);
 
@@ -23,7 +23,7 @@ namespace Acef.MVC.Services
             }
         }
 
-        public async Task Modifier(RaisonDTO raison)
+        public async Task Edit(RaisonDTO raison)
         {
             var response = await _httpClient.PutAsJsonAsync(_raisonApiUrl + raison.ID, raison);
 
@@ -33,7 +33,7 @@ namespace Acef.MVC.Services
             }
         }
 
-        public async Task<RaisonDTO> ObtenirSelonId(int id)
+        public async Task<RaisonDTO> GetById(int id)
         {
             var response = await _httpClient.GetAsync(_raisonApiUrl + id);
 
@@ -45,7 +45,7 @@ namespace Acef.MVC.Services
             return await response.Content.ReadFromJsonAsync<RaisonDTO>();
         }
 
-        public async Task<IEnumerable<RaisonDTO>> ObtenirTout()
+        public async Task<IEnumerable<RaisonDTO>> Get()
         {
             var response = await _httpClient.GetAsync(_raisonApiUrl);
 
@@ -57,7 +57,7 @@ namespace Acef.MVC.Services
             return await response.Content.ReadFromJsonAsync<IEnumerable<RaisonDTO>>();
         }
 
-        public async Task Supprimer(RaisonDTO raison)
+        public async Task Delete(RaisonDTO raison)
         {
             var response = await _httpClient.DeleteAsync(_raisonApiUrl + raison.ID);
 

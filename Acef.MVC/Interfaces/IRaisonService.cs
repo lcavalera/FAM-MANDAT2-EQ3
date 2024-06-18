@@ -4,10 +4,10 @@ namespace Acef.MVC.Interfaces
 {
     public interface IRaisonService
     {
-        public Task Ajouter(RaisonDTO item);
-        public Task<RaisonDTO> ObtenirSelonId(int id);
-        public Task<IEnumerable<RaisonDTO>> ObtenirTout();
-        public Task Modifier(RaisonDTO item);
-        public Task Supprimer(RaisonDTO item);
+        public Task Add(RaisonDTO item);
+        public Task<RaisonDTO> GetById(int id);
+        public Task<IEnumerable<RaisonDTO>> Get();
+        public Task Edit(RaisonDTO item);
+        public Task Delete(RaisonDTO item);
     }
 }

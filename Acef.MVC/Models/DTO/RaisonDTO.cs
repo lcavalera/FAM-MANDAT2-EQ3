@@ -8,7 +8,7 @@ namespace Acef.MVC.Models.DTO
         [JsonPropertyName("id")]
         public int ID { get; set; }
 
-        [Required(ErrorMessage = "Veuillez renseigner le nom de la raison de la consultation")]
+        [Required(ErrorMessage = "The Name field is mandatory")]
         public string Name { get; set; }
         public string? Description { get; set; }
     }
