@@ -81,6 +81,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Generate data
-app.CreateDbIfNotExists();
+//app.CreateDbIfNotExists();
 
 app.Run();
