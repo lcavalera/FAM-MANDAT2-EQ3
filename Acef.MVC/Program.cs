@@ -6,8 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddHttpClient<IRaisonService, RaisonServiceProxy>(client =>
-client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UrlAPIRaison")));
+builder.Services.AddHttpClient<IReasonService, ReasonServiceProxy>(client =>
+client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UrlAPIReasons")));
 
 var app = builder.Build();
 
