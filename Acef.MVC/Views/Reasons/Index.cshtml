@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Acef.MVC.Models.DTO.ReasonDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Consultation Reasons List</h1>
+
+<p>
+    <a asp-action="Create">Add a consultation reason</a>
+</p>
+
+@*Bloc du filtrage*@
+<div class="d-flex justify-content-left my-2">
+    <form asp-action="Index" asp-controller="Reasons" method="get">
+        <div class="row g-3 align-items-center">
+            <div class="col-auto">
+                <input class="form-control" type="text" id="filter" 
+                    name="filter" placeholder="Search for a consultation reason" />
+            </div>
+            <div class="col-auto">
+                <input class="btn btn-primary" type="submit" value="Search" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByName"]">
+                    @Html.DisplayNameFor(model => model.Name)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            @if (item.Description == null)
+            {
+                <td>N/A</td>
+            }
+            else
+            {
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+            }
+            <td>
+                    @* <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a> *@
+                    
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

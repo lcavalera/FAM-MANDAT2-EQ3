@@ -1,0 +1,5 @@
+GET https://localhost:7060/api/Reasons
+Accept: application/json
+
+
+###
